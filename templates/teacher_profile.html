@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% load static %} {% block title %}{{ teacher.user.get_full_name }}'s Profile{% endblock %}
+{% block content %}
+    <section class="teacher-profile">
+        <div class="teacher-info">
+            <img src="{{ teacher.profile_pic.url }}" alt="Teacher profile" class="profile-image">
+            <h2>{{ teacher.user.get_full_name }}</h2>
+            <p class="subject">{{ teacher.subject }}</p>
+            <p class="email">{{ teacher.user.email }}</p>
+        </div>
+    </section>
+
+    <section class="courses">
+        <h1 class="heading">{{ teacher.user.get_full_name }}'s Courses</h1>
+
+        <div class="box-container">
+            {% for course in teacher.course_set.all %}
+            <div class="box">
+                <div class="thumb">
+                    <img src="{{ course.course_image.url }}" alt="{{ course.course_name }}" />
+                    <span>{{ course.materials.count }} videos</span>
+                </div>
+                <h3 class="title">{{ course.course_name }}</h3>
+                <p class="level">{{ course.get_level_display }}</p>
+                <a href="{% url 'playlist' course.id %}" class="inline-btn">view playlist</a>
+            </div>
+            {% empty %}
+            <p class="no-courses">No courses available yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="teacher-stats">
+        <div class="stats-container">
+            <div class="stat-box">
+                <h3>Total Videos</h3>
+                <p>{{ teacher.video_count }}</p>
+            </div>
+            <div class="stat-box">
+                <h3>Total Likes</h3>
+                <p>{{ teacher.like_count }}</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
